@@ -268,10 +268,22 @@ void Controller::IssueCommand(const Command &cmd) {
         auto wr_lat = clk_ - it->second.added_cycle + config_.write_delay;
         simple_stats_.AddValue("write_latency", wr_lat);
         pending_wr_q_.erase(it);
-    } else if (cmd.cmd_type == CommandType::ACTIVATE) {
-        act_queue_.push_back(Address(channel_id_, cmd.Rank(), 0, 
-                                    (8*cmd.Bank() + cmd.Bankgroup()), 
-                                    cmd.Row(), 0));
+    } else if (cmd.cmd_type == CommandType::PRECHARGE || cmd.cmd_type == CommandType::READ_PRECHARGE || cmd.cmd_type == CommandType::WRITE_PRECHARGE) {
+        int rank = cmd.Rank();
+        int bankgroup = cmd.Bankgroup();
+        int bank = cmd.Bank();
+        int row = channel_state_.OpenRow(rank, bankgroup, bank);
+        if (row != -1) {
+            uint64_t open_cycle = channel_state_.OpenCycle(rank, bankgroup, bank);
+            uint64_t t_open = clk_ - open_cycle;
+            uint64_t EACT = 1;
+#ifdef IMPRESS_N
+            EACT = (t_open + config_.tRAS - 1) / config_.tRAS;
+#endif
+            Address act_addr(channel_id_, rank, 0, (8*bank + bankgroup), row, 0);
+            act_addr.EACT = EACT;
+            act_queue_.push_back(act_addr);
+        }
     }
     // must update stats before states (for row hits)
     UpdateCommandStats(cmd);

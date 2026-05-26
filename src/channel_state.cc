@@ -263,6 +263,9 @@ void ChannelState::UpdateSameRankTiming(
 }
 
 void ChannelState::UpdateTimingAndStates(const Command& cmd, uint64_t clk) {
+    if (cmd.cmd_type == CommandType::ACTIVATE) {
+        bank_states_[cmd.Rank()][cmd.Bankgroup()][cmd.Bank()].open_cycle_ = clk;
+    }
     UpdateState(cmd);
     UpdateTiming(cmd, clk);
     return;

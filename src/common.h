@@ -9,27 +9,30 @@ namespace dramsim3 {
 
 struct Address {
     Address()
-        : channel(-1), rank(-1), bankgroup(-1), bank(-1), row(-1), column(-1) {}
+        : channel(-1), rank(-1), bankgroup(-1), bank(-1), row(-1), column(-1), EACT(1) {}
     Address(int channel, int rank, int bankgroup, int bank, int row, int column)
         : channel(channel),
           rank(rank),
           bankgroup(bankgroup),
           bank(bank),
           row(row),
-          column(column) {}
+          column(column),
+          EACT(1) {}
     Address(const Address& addr)
         : channel(addr.channel),
           rank(addr.rank),
           bankgroup(addr.bankgroup),
           bank(addr.bank),
           row(addr.row),
-          column(addr.column) {}
+          column(addr.column),
+          EACT(addr.EACT) {}
     int channel;
     int rank;
     int bankgroup;
     int bank;
     int row;
     int column;
+    uint64_t EACT;
 };
 
 inline uint32_t ModuloWidth(uint64_t addr, uint32_t bit_width, uint32_t pos) {

@@ -23,6 +23,7 @@ class MemorySystem {
     void RegisterACTCallback(std::function<void(uint64_t, 
                                                 uint64_t, 
                                                 uint64_t,
+                                                uint64_t,
                                                 uint64_t)> act_callback);
     double GetTCK() const;
     int GetBusBits() const;

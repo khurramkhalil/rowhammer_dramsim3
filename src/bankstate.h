@@ -33,6 +33,7 @@ class BankState {
 
     // Currently open row
     int open_row_;
+    uint64_t open_cycle_ = 0;
 
     // consecutive accesses to one row
     int row_hit_count_;

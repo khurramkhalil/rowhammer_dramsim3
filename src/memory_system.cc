@@ -41,6 +41,7 @@ void MemorySystem::RegisterACTCallback(
     std::function<void(uint64_t, 
                         uint64_t, 
                         uint64_t,
+                        uint64_t,
                         uint64_t)> act_callback) {
     dram_system_->RegisterACTCallback(act_callback);
 }

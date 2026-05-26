@@ -31,6 +31,9 @@ class ChannelState {
     int OpenRow(int rank, int bankgroup, int bank) const {
         return bank_states_[rank][bankgroup][bank].OpenRow();
     }
+    uint64_t OpenCycle(int rank, int bankgroup, int bank) const {
+        return bank_states_[rank][bankgroup][bank].open_cycle_;
+    }
     int RowHitCount(int rank, int bankgroup, int bank) const {
         return bank_states_[rank][bankgroup][bank].RowHitCount();
     };
