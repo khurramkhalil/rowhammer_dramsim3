@@ -22,6 +22,7 @@ class BankState {
     bool IsRowOpen() const { return state_ == State::OPEN; }
     int OpenRow() const { return open_row_; }
     int RowHitCount() const { return row_hit_count_; }
+    uint64_t open_cycle_ = 0;
 
    private:
     // Current state of the Bank
@@ -33,7 +34,6 @@ class BankState {
 
     // Currently open row
     int open_row_;
-    uint64_t open_cycle_ = 0;
 
     // consecutive accesses to one row
     int row_hit_count_;
