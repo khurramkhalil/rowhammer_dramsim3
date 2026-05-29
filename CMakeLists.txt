@@ -78,6 +78,11 @@ endif (ADDR_TRACE)
 
 target_include_directories(dramsim3 INTERFACE src)
 target_compile_options(dramsim3 PRIVATE -Wall)
+# RP-VTrack always-on: ImPress-N per-ACT EACT = ceil(t_open / tRAS) inside the
+# Controller. Without this flag, controller.cc hard-codes EACT=1 and the
+# adaptive RowPress signal never reaches the ChampSim tracker. This was bug
+# #6 in the 2026-05-29 post-mortem.
+target_compile_options(dramsim3 PRIVATE -DIMPRESS_N)
 target_link_libraries(dramsim3 PRIVATE inih format)
 set_target_properties(dramsim3 PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}
